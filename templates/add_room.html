@@ -1,0 +1,80 @@
+{% extends "index.html" %}
+
+
+{% block content %}
+    
+
+
+    <div class="container text-center">
+        <div class="grid-table">
+            <div class="col-12 col-md-6 py-5 form-container create-div">
+                {{error}}
+                <div class="mk_time">
+                    <h3>Add Room</h3>
+                    <hr>
+                </div>
+                <div class="mk_time">
+                    <form action="/add_room" method="POST">
+                        <div class="form-group d-flex align-items-center">
+                            <label>Room Number :</label>
+                            <input type="text" name="room_no" required>
+                            <br>
+                        </div>
+                        <div class="form-group d-flex align-items-center">
+                            <label>Room Description :</label>
+                            <input type="text" name="room_desc" required>
+                            <br>
+                        </div>    
+                        <div class="form-group d-flex align-items-center">
+                            <label>Shared With Department :</label>
+                            <input type="text" name="shared_dep">
+                            <br>
+                        </div>
+                        <button type="submit"> Add Room</button>
+                    </form>
+                </div>
+            </div>
+            <div class="col-12 col-md-6 py-5 form-container show-div" style="background-color: #eee;">
+                <div class="mk_time mk_time_sh">
+                    <h3>List of Rooms</h3>
+                    <hr>
+                </div>
+                <div class="exist_table">
+                    <table style="width: 100%;">
+                        <thead>
+                            <tr>
+                                <th>Room Number</th>
+                                <th>Room Description</th>
+                                <th>Department</th>
+                                <th>Shared With Department</th>
+                                <th>Options</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for i in rooms %}
+                            <tr>
+                                {% for j in i[1:] %}
+                                    <td>{{ j }}</td>
+                                {% endfor %}
+                                <td>
+                                    <form action="/remove_room" method="POST">
+                                        <input type="hidden" name="del_room" value="{{ i[0] }}">
+                                        <input type="image" src="{{url_for('static', filename='/images/delete.png')}}" class="del-icon" alt="search icon" name="delete" value="delete"/>
+                                    </form>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+{% endblock %}

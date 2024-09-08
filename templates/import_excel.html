@@ -1,0 +1,93 @@
+{% extends "index.html" %}
+
+
+{% block content %}
+
+
+    <div class="container text-center">
+        <div class="row justify-content-around">
+            <div class="col-12 col-md-6 py-5 form-container create-div">
+                <div class="mk_time">
+                    <h3>Import Excel</h3>
+                    <hr>
+                </div>
+                <div class="mk_time">
+                    <form method="POST" enctype="multipart/form-data">
+                        <div class="form-group d-flex align-items-center">
+                            <label><strong>Class :</strong></label>
+                            <select name="import_class" id="import_class" class="form-select" aria-label="Default select example">
+                                <option selected disabled>Select</option>
+                                {% for class in class_batch %}
+                                    <option value="{{ class[0] }}">{{ class[0] }}</option>
+                                {% endfor %}
+                            </select>
+                            <br />
+                        </div>
+                        <div class="form-group d-flex align-items-center">
+                            <label><strong>Division :</strong></label>
+                            <input type="text" id="import_batch" name="import_batch" placeholder="Enter Division"/>
+                            <br />
+                        </div>
+                        <div class="form-group d-flex align-items-center">
+                            <label><strong>TimeTable :</strong></label>
+                            <select name="import_year_sem" id="import_year_sem" class="form-select" aria-label="Default select example">
+                                <option selected disabled>Select</option>
+                                {% for year in year_sem %}
+                                    <option value="{{ year[0] }}">{{ year[0].upper() }}</option>
+                                {% endfor %}
+                            </select>
+                            <br />
+                        </div>
+                        <div class="form-group d-flex align-items-center">
+                            <input type="file" id="import_file" name="import_file" accept=".xlsx, .xls" style="margin-left: 20%;"/>
+                            <br />
+                        </div>
+                        <button type="button" class="submit" onclick="uploadFile()">Submit</button>
+                    </form>
+                </div>
+                <p id="message"></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        async function uploadFile(){
+            const import_class = document.getElementById("import_class").value;
+            const import_batch = document.getElementById("import_batch").value;
+            const import_year_sem = document.getElementById("import_year_sem").value;
+            let import_file = document.getElementById("import_file");
+
+            import_file = import_file.files[0];
+
+            const formData = new FormData();
+            formData.append( "import_class", import_class);
+            formData.append( "import_batch", import_batch);
+            formData.append( "import_year_sem", import_year_sem);
+            formData.append( "import_file", import_file);
+
+
+            try{
+                console.log("Got Here")
+                const response = await fetch("/import_excel", {
+                    method: "POST",
+                    body: formData,
+                });                
+
+                if(response.ok){
+                    console.log(response)
+                    document.getElementById("message").innerText = "File Uploaded Successfully and Data Inserted into table";
+                } else {
+                    document.getElementById("message").innerText = "Failed to Upload File";
+                }
+
+            } catch(error){
+                document.getElementById("message").innerText = "Error Uploading File";
+                console.log(error)
+            }
+
+
+        }
+    </script>
+
+
+{% endblock content %}

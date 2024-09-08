@@ -1,0 +1,38 @@
+{% extends "showtime_nav.html" %}
+
+{% block timeshow %}
+    <table id="timets" hidden>
+    </table>
+    {% if(timetable) %}
+        <div class="timetable-container" id="time-table" style="margin-top: 2%;">
+            <header>
+                <h1>Your University Name</h1>
+                <h1>College Name</h1>
+                <h3>Department of {{ g.CURR_DEPT }}</h3>
+                <h3>Time Table</h3>
+            </header>
+            <section class="class-info">
+                <p style="float: left;">{{ infoImpo }}</p>
+                <p style="float: right;">Year:  {{ CURR_YEAR_SEM[-9:-5] }}-{{ CURR_YEAR_SEM[-4:] }} Semester: 
+                {% if CURR_YEAR_SEM[0].upper() == "E" %}
+                    EVEN
+                {% else %}
+                    ODD
+                {% endif %}
+                </p><br />
+                <p></p>
+                <p style="float: right;">
+                    {% if(fac_load)%}
+                        {{ fac_load }}
+                    {% endif %}
+                </p>
+            </section>
+            <table class="timetable" id="time-table-shown">
+                {{ timetable | safe }}
+            </table>
+            <p style="float: left;"><strong>H.O.D</strong></p>
+            <p style="float: right;"><strong>PRINCIPAL</strong></p>
+        </div>
+    {% endif %}
+    
+{% endblock timeshow %}

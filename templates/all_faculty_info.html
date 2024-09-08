@@ -1,0 +1,14 @@
+{% extends "index.html" %}
+
+{% block content %}
+    {% if (timetable) %}
+    <div class="timetable-container" id="time-table" style="margin-top: 2%;">
+        <table class="timetable free-timetable" id="time-table-shown">
+            {{ timetable | safe }}
+        </table>
+    </div>
+    {% else %}
+        <h1>You should go through show timetable as there is no timetable of a sem with year selected</h1>
+    {% endif %}
+
+{% endblock content %}

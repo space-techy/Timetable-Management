@@ -1,0 +1,190 @@
+{% extends "view_edit.html" %}
+
+{% block view_edit_body %}
+
+
+    <nav class="navbar navbar-expand-lg bg-body-tertiary" style="height: 5% !important; padding-top: 1%; padding-bottom: 1.5%;">
+        {# <form action="/view_edit" method="post"> #}
+            <div class="container-fluid">
+                <input type="hidden" name="class" value="{{div_class}}">
+                <input type="hidden" name="division" value='{{sel_class.split(" ")[-1]}}'>
+                <strong><label for="subject">Subject :</label></strong>
+                <select style="margin-left: 5px; margin-right: 5px;margin-top: 7px;" id="subject" name="subject" onchange="addToData(this)">
+                    <option selected disabled>Select</option>
+                    <!-- Add other subject options here -->
+                    {% for sub in sub_res  %}
+                        <option value="{{sub[0]}}">{{sub[0]}}</option>
+                    {% endfor %}
+                </select>
+                <strong><label for="room">Room :</label></strong>
+                <select style="margin-left: 5px; margin-right: 5px;margin-top: 7px;" id="room" name="room" onchange="addToData(this)">
+                    <option selected disabled>Select</option>
+                    {% for room in room_res %}
+                        <option value="{{room[0]}}">{{room[0]}}</option>
+                    {% endfor %}
+                </select>
+                <strong><label for="faculty">Faculty :</label></strong>
+                <select style="margin-left: 5px; margin-right: 5px;margin-top: 7px;" id="faculty" name="faculty" onchange="addToData(this)">
+                    <option selected disabled>Select</option>
+                    {% for fac in fac_res %}
+                        <option value="{{fac[0]}}">{{fac[0]}}</option>
+                    {% endfor %}
+                </select>
+                <strong><label for="batch">Batch :</label></strong>
+                <select style="margin-left: 5px; margin-right: 5px;margin-top: 7px;" id="batch" name="batch" onchange="addToData(this)">
+                    <option selected disabled>Select</option>
+                    <option value="NO">NO</option>
+                    {% for batch in all_batch %}
+                        <option value="{{batch}}">{{batch}}</option>
+                    {% endfor %}
+                    <!-- Add other batch options here -->
+                </select>
+                <strong><label for="batch">Type :</label></strong>
+                <select style="margin-left: 5px; margin-right: 5px;margin-top: 7px;" id="batch" name="type" onchange="addToData(this)">
+                    <option selected disabled>Select</option>
+                    <option value="L">L</option>
+                    <option value="P">P</option>
+                    <option value="T">T</option>
+                </select>
+            </div>
+            <button type="submit" onclick="checkInsertDataLength()">Submit</button>
+            <button type="submit" onclick="deleteData()">Delete</button>
+        {# </form> #}
+    </nav>
+
+
+
+
+
+<script>
+    var insertData = {};
+    const select_class_division = document.querySelectorAll("input[type='hidden'");
+    
+    insertData["class"] = select_class_division[0].value;
+    insertData["division"] = select_class_division[1].value;
+    
+    console.log(insertData);
+    function addToData(element){
+        insertData[element.name] = element.value;
+
+        if(element.name == "subject"){
+            const sub_val = element.value;
+            const sel_sub = {
+            "getSubject": sub_val,
+            };
+
+            fetch("/get_sub",{
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(sel_sub)
+            })
+            .then(response => response.json())
+            .then(data => {
+                const subBatchList = data.batchList;
+                const batchID = document.getElementById("batch");
+                var batchHTML = "<option selected disabled>Select</option>"+"<option value='NO'>NO</option>";
+
+
+                if(subBatchList != "None"){
+                subBatchList.forEach((batch)=>{
+                    var tempBatch = `<option value='${batch}'>${batch}</option>`
+                    batchHTML = batchHTML + tempBatch;
+                });
+                batchID.innerHTML = batchHTML;
+                }
+            })
+        }
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+        const tdData = document.querySelectorAll("td");
+        let lastClicked = null;
+
+        tdData.forEach((tdDataInfo, i) => {
+            // Set initial border for all td elements
+            tdDataInfo.style.border = "1px solid black";
+
+            tdDataInfo.addEventListener("click", (element) => {
+                // Reset border of previously clicked td
+                if (lastClicked) {
+                    lastClicked.style.border = "1px solid black";
+                }
+
+                // Set border of currently clicked td
+                tdDataInfo.style.border = "3px solid black";
+
+                // Update insertData object
+                insertData["slot"] = tdDataInfo.classList[0];
+                insertData["slot_id"] = tdDataInfo.getAttribute("value");
+
+                // Update lastClicked
+                lastClicked = tdDataInfo;
+            });
+        });
+    });
+
+    function checkInsertDataLength() {
+        if (Object.keys(insertData).length >= 8) {
+            // Trigger the event
+            insertDataToBack();
+        }
+    }
+
+    function deleteData(){
+        if(Object.keys(insertData).includes("slot_id")){
+            if(confirm("Do you want to delete the slot : " + insertData["slot_id"])){
+                deletDataFromBack();
+            }
+        } else {
+            alert("No slot selected for deletion.");
+        }
+    }
+
+
+
+    async function deletDataFromBack(){
+        const sendDelBody = JSON.stringify(insertData);
+        await fetch("/view_delete_api",{
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: sendDelBody
+        })
+        .then(response => response.json())
+        .then(data => {
+            errors = data.error;
+            alert(errors);
+            location.reload();
+        })
+    }
+
+    async function insertDataToBack(){
+        // Your event handling code here
+        const sendBody = JSON.stringify(insertData);
+        await fetch("/view_edit_check_api", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: sendBody
+        })
+        .then(response => response.json())
+        .then(data => {
+            errors = data.error;
+            console.log(errors);
+            alert(errors);
+            location.reload();
+        })
+    }
+    
+
+    
+
+</script>
+
+
+
+{% endblock view_edit_body %}

@@ -1,0 +1,97 @@
+body {
+    font-family: Arial, sans-serif;
+}
+
+.timetable-container {
+    max-width: 1250px;
+    margin: 20px auto;
+    text-align: center;
+    margin-bottom: 80px;
+}
+
+header h1 {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+header p {
+    margin: 5px 0;
+}
+
+.class-info {
+    margin: 20px 0;
+    font-weight: bold;
+}
+
+.timetable {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+.timetable th, .timetable td {
+    border: 1px solid black;
+    padding: 5px;
+    text-align: center;
+}
+
+.timetable th {
+    background-color: #ddd;
+}
+
+.timetable thead th {
+    text-align: center;
+}
+
+.timetable tfoot td {
+    font-weight: bold;
+}
+
+.timetable td[colspan="5"] {
+    text-align: center;
+}
+
+.container-fluid{
+    display: flex;
+    justify-content: right !important;
+}
+
+.form-group-1 {
+    display: flex;
+    align-items: center;
+    margin-right: 20px;
+}
+
+.form-group-1 label {
+    margin-right: 10px;
+    font-weight: bold;
+}
+
+
+.form-group-1 button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.form-group-1 button:hover {
+    background-color: #0056b3;
+}
+
+.nav-link{
+    color: #0056b3;
+}
+
+.nav-link:hover{
+    text-decoration: none; 
+    background-color: #ccc;
+}
+
+
+.free-timetable td{
+    max-width: 250px !important;
+    word-wrap: break-word !important;
+}

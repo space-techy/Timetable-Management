@@ -1,0 +1,23 @@
+{% extends "index.html" %}
+
+{% block content %}
+    <form action="/free_faculty" method="POST">
+        <div class="form-group d-flex align-items-center form-group-1">
+            <label>Select Department:</label>
+            <select name="sel_dept" class="form-select" aria-label="Default select example" style="width: 205px !important;">
+                <option selected disabled>Department</option>
+                {% for department in department_res %}
+                    <option value="{{ department[0]}}">{{ department[0]}}</option>
+                {% endfor %}
+            </select>
+            <button type="submit" name="button_submit" value="view" style="margin-top: 30px;">View</button>
+        </div>
+    </form>
+    {% if (timetable) %}
+        <div class="timetable-container" id="time-table" style="margin-top: 2%;">
+            <table class="timetable free-timetable" id="time-table-shown">
+                {{ timetable | safe }}
+            </table>
+        </div>
+    {% endif %}
+{% endblock content %}
