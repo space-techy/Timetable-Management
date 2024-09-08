@@ -13,21 +13,21 @@ Flask is python based backend like we have express for MERN.
 
   First create virtual env
 
-   `python -m venv .env`
+     python -m venv .env
 
   Next is we open that .env file
 
   I am using git bash:
 
-    `. .venv/Scripts/Activate`
+    . .venv/Scripts/Activate
 
   and then we have to install
 
-    `pip install -r requirements.txt`
+    pip install -r requirements.txt
 
   and now
 
-    `flask --app app.py --debug run`
+    flask --app app.py --debug run
 
   and now there you will see url and just open it in browser
 
