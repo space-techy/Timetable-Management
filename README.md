@@ -1,10 +1,8 @@
 # Timetable Management Website
 
-##### (Note : This is new repo as old one had lots of college information)
+#### Video Demo: https://youtu.be/UzbKGHNAxwY
 
-This was my internship project where you can create and edit timetable.
-You can visually edit it as well.
-There is another feature where you can see the timetable.
+# Description:
 
 # Flask Based
 
